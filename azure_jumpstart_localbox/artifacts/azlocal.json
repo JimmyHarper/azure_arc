@@ -465,6 +465,20 @@
       "metadata": {
         "description": "Solution builder extension (SBE) partner credential properties"
       }
+    },
+    "keyVaultDnsSuffix": {
+      "defaultValue": [".vault.usgovcloudapi.net"],
+      "type": "string",
+      "metadata": {
+        "description": "key vault dns suffix specific to Azure Cloud - .vault.azure.net for global Azure, '.vault.usgovcloudapi.net for Azure Government"
+      }
+    },
+    "storageEndpointSuffix": {
+      "defaultValue": [".core.usgovcloudapi.net"],
+      "type": "string",
+      "metadata": {
+        "description": "storage dns suffix specific to Azure Cloud - .core.windows.net for global Azure, .core.usgovcloudapi.net for Azure Government"
+      }
     }
   },
   "variables": {
@@ -475,10 +489,10 @@
     "LocalAdminCredentialSecretName": "[concat( parameters('clusterName'), '-', 'LocalAdminCredential')]",
     "domainAdminSecretName": "[concat( parameters('clusterName'), '-', 'AzureStackLCMUserCredential')]",
     "storageWitnessNameVar": "WitnessStorageKey",
-    "secretsLocationVar": "[concat('https://',parameters('keyVaultName'), '.vault.azure.net')]",
+    "secretsLocationVar": "[concat('https://',parameters('keyVaultName'), parameters('keyVaultDnsSuffix'))]",
     "witnessTypeVar": "[if(equals(parameters('witnessType'), 'No Witness'), '','Cloud')]",
     "clusterWitnessStorageAccountNameVar": "[if(equals(parameters('witnessType'), 'No Witness'), '', parameters('clusterWitnessStorageAccountName'))]",
-    "AzureServiceEndpointVar": "[if(equals(parameters('witnessType'), 'No Witness'), '', 'core.windows.net')]",
+    "AzureServiceEndpointVar": "[if(equals(parameters('witnessType'), 'No Witness'), '', parameters('storageEndpointSuffix'))]",
     "localAdminSecretValue": "[base64(concat(parameters('localAdminUserName'),':',parameters('localAdminPassword')))]",
     "domainAdminSecretValueVar": "[base64(concat(parameters('AzureStackLCMAdminUsername'),':',parameters('AzureStackLCMAdminPasssword')))]",
     "CloudWithnessStorageAccountIdVar": "[resourceId('Microsoft.Storage/storageAccounts', parameters('clusterWitnessStorageAccountName'))]",
@@ -489,7 +503,7 @@
           "input": {
               "secretName": "[parameters('partnerCredentialList')[copyIndex('answerfileSBESecrets')].secretName]",
               "eceSecretName": "[parameters('partnerCredentialList')[copyIndex('answerfileSBESecrets')].secretName]",
-              "secretLocation": "[concat('https://', parameters('keyVaultName'), '.vault.azure.net/secrets/', parameters('partnerCredentialList')[copyIndex('answerfileSBESecrets')].secretName)]"
+              "secretLocation": "[concat('https://', parameters('keyVaultName'),parameters('keyVaultDnsSuffix'), '/secrets/', parameters('partnerCredentialList')[copyIndex('answerfileSBESecrets')].secretName)]"
           }
       },
       {
@@ -502,17 +516,17 @@
       {
         "secretName": "[variables('storageWitnessSecretName')]",
         "eceSecretName" : "[variables('storageWitnessECEName')]",
-        "secretLocation": "[concat('https://', parameters('keyVaultName'), '.vault.azure.net/secrets/', variables('storageWitnessSecretName'))]"
+        "secretLocation": "[concat('https://', parameters('keyVaultName'),parameters('keyVaultDnsSuffix'), '/secrets/', variables('storageWitnessSecretName'))]"
       },
       {
         "secretName":  "[variables('LocalAdminCredentialSecretName')]",
         "eceSecretName" :  "[variables('LocalAdminCredentialECEName')]",
-         "secretLocation": "[concat('https://', parameters('keyVaultName'), '.vault.azure.net/secrets/', variables('LocalAdminCredentialSecretName'))]"
+         "secretLocation": "[concat('https://', parameters('keyVaultName'),parameters('keyVaultDnsSuffix'), '/secrets/', variables('LocalAdminCredentialSecretName'))]"
       },
       {
         "secretName":  "[variables('domainAdminSecretName')]",
         "eceSecretName" :  "[variables('domainAdminCredentialECEName')]",
-        "secretLocation": "[concat('https://', parameters('keyVaultName'), '.vault.azure.net/secrets/', variables('domainAdminSecretName'))]"
+        "secretLocation": "[concat('https://', parameters('keyVaultName'),parameters('keyVaultDnsSuffix'), '/secrets/', variables('domainAdminSecretName'))]"
       }
 
     ]
