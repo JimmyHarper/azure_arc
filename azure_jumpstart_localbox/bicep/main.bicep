@@ -1,3 +1,6 @@
+@description('Azure environment for your service principal')
+param azureEnvironment string
+
 @description('Azure AD tenant id for your service principal')
 param tenantId string
 
@@ -48,10 +51,10 @@ param natGatewayName string = 'LocalBox-NatGateway'
 
 @description('The size of the Virtual Machine')
 @allowed([
-  'Standard_E32s_v5'
-  'Standard_E32s_v6'
+  'Standard_E32as_v5'
+  'Standard_E32as_v6'
 ])
-param vmSize string = 'Standard_E32s_v6'
+param vmSize string = 'Standard_E32as_v6'
 
 @description('Option to enable spot pricing for the LocalBox Client VM')
 param enableAzureSpotPricing bool = false
@@ -75,8 +78,9 @@ param tags object = {
   'canadacentral'
   'japaneast'
   'centralindia'
+  'usgovvirginia'
 ])
-param azureLocalInstanceLocation string = 'australiaeast'
+param azureLocalInstanceLocation string = 'usgovvirginia'
 
 // if governResourceTags is true, add the following tags
 var resourceTags = governResourceTags ? union(tags, {
@@ -136,6 +140,7 @@ module hostDeployment 'host/host.bicep' = {
     resourceTags: resourceTags
     enableAzureSpotPricing: enableAzureSpotPricing
     azureLocalInstanceLocation: azureLocalInstanceLocation
+    azureEnvironment: azureEnvironment
   }
 }
 

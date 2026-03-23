@@ -1,5 +1,6 @@
 using './main.bicep'
 
+param azureEnvironment = '<AzureCloud / AzureUSGovernment / AzureChinaCloud>'
 param tenantId = '<your tenant id>'
 param spnProviderId = '<your Microsoft.AzureStackHCI resource provider object id>'
 param windowsAdminUsername = 'arcdemo'
@@ -15,7 +16,7 @@ param rdpPort = '3389'
 param autoDeployClusterResource = true
 param autoUpgradeClusterResource = false
 param vmAutologon = true
-param vmSize = 'Standard_E32s_v6'
+param vmSize = 'Standard_E32as_v6'
 param enableAzureSpotPricing = false
 param governResourceTags = true
 param tags = {
