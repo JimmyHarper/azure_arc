@@ -1,16 +1,16 @@
 using './main.bicep'
 
-param azureEnvironment = '<AzureCloud / AzureUSGovernment / AzureChinaCloud>'
-param tenantId = '<your tenant id>'
-param spnProviderId = '<your Microsoft.AzureStackHCI resource provider object id>'
+param azureEnvironment = 'AzureUSGovernment'
+param tenantId = '2d2bd518-008f-418c-8ded-ee537e05ef48'
+param spnProviderId = 'a9497482-12f3-4f20-8be6-7452dfd7981c'
 param windowsAdminUsername = 'arcdemo'
-param windowsAdminPassword = '<your password>'
+param windowsAdminPassword = 'AzureLocal10!!'
 param logAnalyticsWorkspaceName = 'LocalBox-Workspace'
 param natDNS = '8.8.8.8'
-param githubAccount = 'microsoft'
-param githubBranch = 'main'
+param githubAccount = 'JimmyHarper'
+param githubBranch = 'gov-mods'
 param deployBastion = false
-param location = 'northeurope'
+param location = 'usgovvirginia'
 param azureLocalInstanceLocation = 'usgovvirginia'
 param rdpPort = '3389'
 param autoDeployClusterResource = true
