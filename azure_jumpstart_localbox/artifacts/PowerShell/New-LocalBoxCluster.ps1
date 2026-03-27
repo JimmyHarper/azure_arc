@@ -1,8 +1,24 @@
 ﻿###################################################################################
 <############# Adding Set-AzLocalDeployPrereqs here, as the one defined in the 
 SDK (https://github.com/Azure/jumpstart-sdk/blob/main/powershell/modules/Azure.Arc.Jumpstart.LocalBox/source/Public/Set-AzLocalDeployPrereqs.ps1)
-is hardcoded to AzureCloud. The one below will use AzureUSGovernment cloud
+is hardcoded to AzureCloud. The one below will use AzureUSGovernment cloud.
+Also added ConvertFrom-SecureStringToPlainText function to the top since it is called in the Set-AzLocalDeployPrereqs function.
 #>#
+
+function ConvertFrom-SecureStringToPlainText {
+    param (
+        [Parameter(Mandatory = $true)]
+        [System.Security.SecureString]$SecureString
+    )
+
+    $Ptr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecureString)
+    try {
+        return [System.Runtime.InteropServices.Marshal]::PtrToStringBSTR($Ptr)
+    }
+    finally {
+        [System.Runtime.InteropServices.Marshal]::ZeroFreeBSTR($Ptr)
+    }
+}
 function Set-AzLocalDeployPrereqs {
     param (
         $LocalBoxConfig,
