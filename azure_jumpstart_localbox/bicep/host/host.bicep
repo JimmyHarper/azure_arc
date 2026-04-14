@@ -3,10 +3,12 @@ param vmName string = 'LocalBox-Client'
 
 @description('The size of the Virtual Machine')
 @allowed([
+  'Standard_E32s_v5'
+  'Standard_E32s_v6'
   'Standard_E32as_v5'
   'Standard_E32as_v6'
 ])
-param vmSize string = 'Standard_E32as_v5'
+param vmSize string = 'Standard_E32s_v5'
 
 @description('Username for the Virtual Machine')
 param windowsAdminUsername string = 'arcdemo'
@@ -24,7 +26,18 @@ param windowsOSVersion string = '2025-datacenter-g2'
 param location string = resourceGroup().location
 
 @description('Region to register Azure Local instance in. This is the region where the Azure Local instance resources will be created. The region must be one of the supported Azure Local regions.')
-param azureLocalInstanceLocation string = 'usgovvirginia'
+@allowed([
+  'australiaeast'
+  'southcentralus'
+  'eastus'
+  'westeurope'
+  'southeastasia'
+  'canadacentral'
+  'japaneast'
+  'centralindia'
+  'usgovvirginia'
+])
+param azureLocalInstanceLocation string = 'australiaeast'
 
 @description('Resource Id of the subnet in the virtual network')
 param subnetId string

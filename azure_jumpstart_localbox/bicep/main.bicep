@@ -51,10 +51,12 @@ param natGatewayName string = 'LocalBox-NatGateway'
 
 @description('The size of the Virtual Machine')
 @allowed([
+  'Standard_E32s_v5'
+  'Standard_E32s_v6'
   'Standard_E32as_v5'
   'Standard_E32as_v6'
 ])
-param vmSize string = 'Standard_E32as_v6'
+param vmSize string = 'Standard_E32s_v6'
 
 @description('Option to enable spot pricing for the LocalBox Client VM')
 param enableAzureSpotPricing bool = false
@@ -69,7 +71,18 @@ param tags object = {
 }
 
 @description('Region to register Azure Local instance in. This is the region where the Azure Local instance resources will be created. The region must be one of the supported Azure Local regions.')
-param azureLocalInstanceLocation string = 'usgovvirginia'
+@allowed([
+  'australiaeast'
+  'southcentralus'
+  'eastus'
+  'westeurope'
+  'southeastasia'
+  'canadacentral'
+  'japaneast'
+  'centralindia'
+  'usgovvirginia'
+])
+param azureLocalInstanceLocation string = 'australiaeast'
 
 // if governResourceTags is true, add the following tags
 var resourceTags = governResourceTags ? union(tags, {
